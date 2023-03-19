@@ -10,3 +10,20 @@ configuration](https://github.com/LibriVox/librivox-ansible/blob/master/roles/bl
 and a [WordPress theme](https://github.com/LibriVox/librivox-wordpress-theme).
 The blog+catalog combination is the LibriVox [home
 page](https://librivox.org/).
+
+## Running Integration Tests
+
+Grab a copy of PHPUnit: https://phpunit.de/
+
+Then, assuming you can hit localhost this way:
+
+```bash
+./phpunit tests/SearchTest.php
+```
+
+Otherwise, if you want to run all the tests, then:
+
+```bash
+./phpab -o tests/autoload.php -b tests tests/ # https://github.com/theseer/Autoload/
+./phpunit --bootstrap tests/autoload.php tests
+```

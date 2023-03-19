@@ -5,3 +5,9 @@ application/config/email.php
 application/logs/log-*
 public_html/librivox-validator-books
 public_html/uploads
+
+# Emacs stuff and testing things
+.ac-php-conf.json
+.phpunit.result.cache
+phpab
+phpunit
