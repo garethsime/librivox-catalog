@@ -21,6 +21,11 @@ class Group extends Catalog_controller
 		$matches = $this->_get_all_group_projects($group_id, 0, 1000000);
 		$this->data['matches'] = count($matches);
 
+        $search_page = $this->input->get('search_page', TRUE); // Enable XSS check
+        if ($search_page != null && is_numeric($search_page) && $search_page > 0) {
+            $this->data['search_page'] = $search_page;
+        }
+
 		$this->_render('catalog/group');
 		return;
 	}
