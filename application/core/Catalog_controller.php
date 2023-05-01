@@ -24,6 +24,16 @@ class Catalog_controller extends CI_Controller
 		$this->load->view($file, $this->data);
 	}
 
+    function _format_structured_pagination(
+        $current_page,
+        $page_count,
+    ) {
+        return array(
+            "current_page" => $current_page,
+            "page_count" => $page_count,
+        );
+    }
+
 	function _format_pagination($current_page, $page_count, $call_function = 'get_results')
 	{
         $page_count = intval($page_count); // It's a float, but we want ints. (Causes problems when generating ranges.)

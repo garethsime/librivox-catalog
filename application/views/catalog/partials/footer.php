@@ -233,7 +233,15 @@
 					}
 
 					$('.browse-list').html(response_obj.results);
-					$('.page-number-nav').html(response_obj.pagination);
+					if (response_obj.structured_pagination) {
+						var pages = format_structured_pagination(
+							response_obj.structured_pagination,
+							'get_results'
+						);
+						$('.page-number-nav').html(pages);
+					} else {
+						$('.page-number-nav').html(response_obj.pagination);
+					}
 				}
 
 				if (history.pushState) {
@@ -245,7 +253,73 @@
 
 
 			}
-		});		
+		});
+	}
+
+	function format_structured_pagination(pagination, call_function) {
+		if (pagination.page_count === 1) {
+			return [];
+		}
+		var render_link = function(n) {
+			return format_pagination_link(n, pagination, call_function);
+		}
+
+		var num_links_either_side = pagination.page_count < 10 ? 10 : 3;
+		var pages = build_pagination_arary(pagination, num_links_either_side);
+
+		var pagination_elements = [];
+
+		// Add the first page
+		pagination_elements.push(render_link(1));
+		var distance_to_first_page = pages[0] - 1;
+		if (distance_to_first_page === 2) {
+			// If we're only one hop away, just print the link rather than the '...'
+			pagination_elements.push(render_link(2));
+		} else if (distance_to_first_page > 2) {
+			pagination_elements.push('...');
+		}
+
+		// Print the pages either side of the selected page, but not the first or last pages
+		for (var i = 0; i < pages.length; i++) {
+			var page = pages[i];
+			if (page === 1 || page === pagination.page_count) {
+				continue;
+			} else {
+				pagination_elements.push(render_link(page));
+			}
+		}
+
+		// Print the link to the last page
+		var last_page_to_show = pages[pages.length - 1];
+		var distance_to_last_page = pagination.page_count - last_page_to_show;
+		if (distance_to_last_page === 2) {
+			// If we're only one hop away, just print the link rather than the '...'
+			pagination_elements.push(render_link(pagination.page_count - 1));
+		} else if (distance_to_last_page > 2) {
+			pagination_elements.push('...');
+		}
+		pagination_elements.push(render_link(pagination.page_count))
+
+		return pagination_elements;
+	}
+
+	function build_pagination_arary(pagination, num_links_either_side) {
+		//need an array of (n links) + $first_page + (n links)
+		var start = Math.max(1, pagination.current_page - num_links_either_side);
+		var end = Math.min(pagination.page_count, pagination.current_page + num_links_either_side);
+		var range = [];
+		for (var i = start; i <= end; i++) range.push(i);
+		return range;
+	}
+
+	function format_pagination_link(page, pagination, call_function) {
+		var active_class = page === pagination.current_page ? 'active' : '';
+		return $('<a>')
+			.attr('class', 'page-number ' + active_class)
+			.attr('href', '#')
+			.attr('data-page_number', page)
+			.attr('data-call_function', call_function)
+			.text(page);
 	}
 
 

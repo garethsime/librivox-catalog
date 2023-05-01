@@ -46,6 +46,11 @@ class Author extends Catalog_controller
 		$page_count = (count($full_set) > CATALOG_RESULT_COUNT) ? ceil(count($full_set) / CATALOG_RESULT_COUNT) : 0;
 		$retval['pagination'] = (empty($page_count)) ? '' : $this->_format_pagination($input['search_page'], $page_count);
 
+		$retval['structured_pagination'] = $this->_format_structured_pagination(
+			intval($input['search_page']),
+			max(1, $page_count)
+		);
+
 		$retval['status'] = 'SUCCESS';
 
 		//$retval['page_count'] = $page_count;
