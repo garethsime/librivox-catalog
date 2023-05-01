@@ -379,6 +379,7 @@
 			return;
 		}
 
+		set_advanced_form_page(1); // This is a new search, so reset
 		librivox_search();
 
 		$('#sidebar_wrapper').show();
@@ -389,8 +390,6 @@
 
 	function librivox_search()
 	{
-		set_advanced_form_page(1); //this is a new search, so reset
-
 		search_order = 'alpha';
 
 		$('#advanced_search_form #sort_order').val('alpha'); // the code eventually serializes the form, so we need to set it to alpha here
