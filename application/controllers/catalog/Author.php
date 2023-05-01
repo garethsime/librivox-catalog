@@ -21,11 +21,6 @@ class Author extends Catalog_controller
 		$matches = $this->_get_all_author($author_id);
 		$this->data['matches'] = count($matches);
 
-        $search_page = $this->input->get('search_page', TRUE); // Enable XSS check
-        if ($search_page != null && is_numeric($search_page) && $search_page > 0) {
-            $this->data['search_page'] = $search_page;
-        }
-
 		$this->_render('catalog/author');
 		return;
 	}
