@@ -5,3 +5,13 @@ application/config/email.php
 application/logs/log-*
 public_html/librivox-validator-books
 public_html/uploads
+node_modules
+
+# There's likely a better way to do this
+public_html/js/catalog/advanced_search.js
+public_html/js/catalog/author.js
+public_html/js/catalog/page.js
+public_html/js/catalog/reader.js
+public_html/js/catalog/search.js
+public_html/js/catalog/sections.js
+public_html/js/catalog/small-menu.js

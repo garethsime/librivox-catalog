@@ -1,0 +1,20 @@
+{
+	"env": {
+		"browser": true,
+		"jquery": true
+	},
+	"extends": "airbnb-base",
+	"overrides": [],
+	"parserOptions": {
+		"ecmaVersion": "latest",
+		"sourceType": "script"
+	},
+	"globals": {
+		"CI_ROOT": "readonly"
+	},
+	"rules": {
+		"no-tabs": 0,
+		"indent": ["error", "tab"],
+		"camelcase": 0
+	}
+}

@@ -10,3 +10,26 @@ configuration](https://github.com/LibriVox/librivox-ansible/blob/master/roles/bl
 and a [WordPress theme](https://github.com/LibriVox/librivox-wordpress-theme).
 The blog+catalog combination is the LibriVox [home
 page](https://librivox.org/).
+
+
+## Frontend Development
+
+Being a PHP-based service, there's pretty much frontend scattered throughout
+everything. Good luck!
+
+Seriously though, there are a few places to look for frontend code:
+
+- Various spots in `.php` files, particularly in `/application/views/`
+- `/public_html` - These are all served as static assets
+- `/src` - These aren't served, they're transpiled into `/public_html` as needed
+
+The idea is to try and move as much stuff into `/src` as we can because that
+gives us the most flexibility to choose tooling.
+
+To get set up with linting and transpiling:
+
+```bash
+npm install
+npm run lint
+npm run build
+```

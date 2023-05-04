@@ -1,0 +1,22 @@
+{
+	"name": "librivox-catalog",
+	"version": "1.0.0",
+	"description": "",
+	"main": "",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"lint": "eslint src",
+		"build": "babel src -d public_html"
+	},
+	"author": "",
+	"license": "",
+	"devDependencies": {
+		"@babel/cli": "^7.21.5",
+		"@babel/core": "^7.21.8",
+		"@babel/preset-env": "^7.21.5",
+		"browserlist": "^1.0.1",
+		"eslint": "^8.39.0",
+		"eslint-config-airbnb-base": "^15.0.0",
+		"eslint-plugin-import": "^2.27.5"
+	}
+}
