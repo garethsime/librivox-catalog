@@ -26,7 +26,7 @@
 				</div>
 				
 				<div class="page-header-half">	
-					<p><span>Total matches:</span> <?= $matches ?></p>
+					<p><span>Total matches:</span> <?= $total_matches ?></p>
 				</div>	
 
 			</div>	
@@ -40,15 +40,14 @@
 				 </select> 
 			</div><!-- end .sort-menu -->
 		</div><!-- end . page-header -->
-			 		
-		<ul class="browse-list">
 
-					
-			
+		<ul class="browse-list">
+			<?= isset($matches) ? $matches : '' ?>
 		</ul>
-	
-	<div class="page-number-nav"></div>
-	
+
+		<div class="page-number-nav">
+			<?= isset($pagination) ? $pagination : '' ?>
+		</div>
 	</div>
 </div><!-- end .page -->
 

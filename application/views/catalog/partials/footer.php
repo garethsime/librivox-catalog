@@ -87,7 +87,8 @@
 			var item = $('.js-menu_item[data-menu_item="'+search_category+'"]');
 			load_search_data(item, search_category);
 		}
-		else if (jQuery.inArray(current_page, ['author', 'reader', 'group']) > -1)
+		// If it's the author/reader/group pages, and there are no titles loaded already, then load them
+		else if (jQuery.inArray(current_page, ['author', 'reader', 'group']) > -1 && $('.browse-list').children().length === 0)
 		{
 			get_results(current_page, search_page, sub_category, primary_key);
 		}

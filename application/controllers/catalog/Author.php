@@ -18,8 +18,16 @@ class Author extends Catalog_controller
 
 		$this->data['primary_key'] = $author_id;
 
-		$matches = $this->_get_all_author($author_id);
-		$this->data['matches'] = count($matches);
+		[
+			'total_matches' => $this->data['total_matches'],
+			'matches' => $this->data['matches'],
+			'pagination' => $this->data['pagination'],
+		] = $this->_load_results_and_pagination(
+			$author_id,
+			$this->input->get('project_type') ?? 'either',
+			$this->input->get('search_order') ?? 'alpha',
+			$this->input->get('search_page') ?? 1,
+		);
 
 		$this->data['search_order'] = $this->input->get('search_order');
 
@@ -34,39 +42,17 @@ class Author extends Catalog_controller
 		$author_id = $input['primary_key'];
 		$search_order = $input['search_order'];
 
-		//format offset
-		$offset = ($input['search_page'] - 1) * CATALOG_RESULT_COUNT;
-
-		// go get results
-		$results = $this->_get_all_author($author_id, $offset, CATALOG_RESULT_COUNT, $search_order, $input['project_type']);
-
-		$full_set = $this->_get_all_author($author_id, 0, 1000000, 'alpha', $input['project_type']);
-		//$retval['sql'] = $this->db->last_query();
-
-		// go format results
-		$retval['results'] = $this->_format_results($results, 'title');
-
-		//pagination
-		$page_count = (count($full_set) > CATALOG_RESULT_COUNT) ? ceil(count($full_set) / CATALOG_RESULT_COUNT) : 0;
-		$retval['pagination'] = (empty($page_count))
-							  ? ''
-							  : $this->_format_pagination(
-								  $input['search_page'],
-								  $page_count,
-								  'get_results',
-								  function ($page) use ($author_id, $search_order) {
-									  $query_string = http_build_query(array(
-										  'search_page' => $page,
-										  'search_order' => $search_order,
-									  ));
-									  return '/author/' . $author_id . '/?' . $query_string;
-								  },
-							  );
+		[
+			'matches' => $retval['results'],
+			'pagination' => $retval['pagination'],
+		] = $this->_load_results_and_pagination(
+			$author_id,
+			$input['project_type'] ?? 'either',
+			$search_order ?? 'alpha',
+			$input['search_page'] ?? 1,
+		);
 
 		$retval['status'] = 'SUCCESS';
-
-		//$retval['page_count'] = $page_count;
-		//$retval['full_set'] = $full_set;
 
 		//return - results, pagination
 		if ($this->input->is_ajax_request())
@@ -75,6 +61,58 @@ class Author extends Catalog_controller
 			echo json_encode($retval);
 			return;
 		}
+	}
+
+	/**
+	 * Generates HTML for matches and the corresponding pagination.
+	 *
+	 * @param string $author_id The ID of the author
+	 * @param string $project_type Which types of project may be returned
+	 * @param string $search_order The order of the search results
+	 * @param int $search_page The page of results we're loading
+	 * @return array The total matches, match HTML, and pagination HTML
+	 */
+	private function _load_results_and_pagination(
+		string $author_id,
+		string $project_type,
+		string $search_order,
+		int $search_page,
+	) {
+		// Grab all the matches
+		$offset = ($search_page - 1) * CATALOG_RESULT_COUNT;
+		$matches = $this->_get_all_author(
+			$author_id,
+			$offset,
+			CATALOG_RESULT_COUNT,
+			$search_order,
+			$project_type,
+		);
+		$formatted_matches = $this->_format_results($matches, 'title');
+
+		// Grab the total number of results, used for pagination
+		$total_matches = count($this->_get_all_author($author_id, project_type: $project_type));
+
+		// Grab the corresponding pagination
+		$page_count = ($total_matches > CATALOG_RESULT_COUNT)
+			? ceil($total_matches / CATALOG_RESULT_COUNT)
+			: 0;
+
+		$pagination = (empty($page_count))
+			? ''
+			: $this->_format_pagination(
+				$search_page,
+				$page_count,
+				'get_results',
+				function ($page) use ($author_id) {
+					return '/author/' . $author_id . '/?search_page=' . $page;
+				},
+			);
+
+		return [
+			'total_matches' => $total_matches,
+			'matches' => $formatted_matches,
+			'pagination' => $pagination,
+		];
 	}
 
 	function _get_all_author($author_id, $offset = 0, $limit = 1000000, $search_order = 'alpha', $project_type = 'either')
