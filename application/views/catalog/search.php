@@ -20,8 +20,11 @@
 			</div><!-- end .sort-menu -->
 		</div>
 
-		<ul class="browse-list"></ul>
+		<noscript>
+			<p>Sorry, you need Javascript enabled to view these search results<p>
+		</noscript>
 
+		<ul class="browse-list"></ul>
 		<div class="page-number-nav"></div>
 	</div>
 </div><!-- end .main-content -->
