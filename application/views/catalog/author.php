@@ -33,12 +33,17 @@
 			</div><!-- end .sort-menu -->
 		</div><!-- end . page-header -->
 
-		<noscript>
-			<p>Sorry, you need Javascript enabled to view these search results<p>
-		</noscript>
+		<ul class="browse-list">
+			<noscript>
+				<?= isset($match_results) ? $match_results : '' ?>
+			</noscript>
+		</ul>
 
-		<ul class="browse-list"></ul>
-		<div class="page-number-nav"></div>
+		<div class="page-number-nav">
+			<noscript>
+				<?= isset($pagination) ? $pagination : '' ?>
+			</noscript>
+		</div>
 	</div><!-- end .page -->
 </div><!-- end .main-content -->
 
