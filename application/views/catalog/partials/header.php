@@ -76,12 +76,18 @@
 				<h3>Browse the catalog</h3>
 				<nav class="main-menu-list-wrap">
 					<ul class="main-menu-list">
-						<li data-menu_item="author" class="js-menu_item first"><a href="#"><span class="author-icon"></span>Author</a></li>
-						<li data-menu_item="title" class="js-menu_item last"><a href="#"><span class="title-icon"></span>Title</a></li>
-						<li data-menu_item="genre" class="js-menu_item "><a href="#"><span class="genre-icon"></span>Genre/Subject</a></li>
-						<li data-menu_item="language" class="js-menu_item "><a href="#"><span class="language-icon"></span>Language</a></li>
-						<!-- <li data-menu_item="reader" class="js-menu_item "><a href="#"><span class="reader-icon"></span>Reader</a></li> -->
-
+						<li data-menu_item="author" class="js-menu_item">
+							<a href="<?= base_url() . 'search/author' ?>" class="<?= $search_category === 'author' ? 'active' : '' ?>"><span class="author-icon"></span>Author</a>
+						</li>
+						<li data-menu_item="title" class="js-menu_item">
+							<a href="<?= base_url() . 'search/title' ?>" class="<?= $search_category === 'title' ? 'active' : '' ?>"><span class="title-icon"></span>Title</a>
+						</li>
+						<li data-menu_item="genre" class="js-menu_item">
+							<a href="<?= base_url() . 'search/genre' ?>" class="<?= $search_category === 'genre' ? 'active' : '' ?>"><span class="genre-icon"></span>Genre/Subject</a>
+						</li>
+						<li data-menu_item="language" class="js-menu_item">
+							<a href="<?= base_url() . 'search/language' ?>" class="<?= $search_category === 'language' ? 'active' : '' ?>"><span class="language-icon"></span>Language</a>
+						</li>
 					</ul>
 				</nav>
 			</section> <!-- end main-menu -->
