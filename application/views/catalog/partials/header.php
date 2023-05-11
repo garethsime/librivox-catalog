@@ -59,11 +59,13 @@
 
 			<!-- Search Form -->
 			<div class="search-wrap">
-				<form role="search" action="#" id="searchform" method="get" class="searchform">
+				<form role="search" action="/search" id="searchform" method="get" class="searchform">
 					<label class="assistive-text" for="q">Search LibriVox</label>
 					<input type="text" placeholder="Search by Author, Title or Reader" id="q" name="q" class="field">
-					<input type="text" id="dummy" name="dummy" style="display:none;">
-					<input type="submit" value="Search" id="searchsubmit" name="submit" class="submit">
+					<input type="text" id="dummy" style="display:none;">
+					<? /* The Search.php controller chooses which method to use based on the `search_form`  */ ?>
+					<input type="hidden" name="search_form" value="get_results" style="display:none;">
+					<input type="submit" value="Search" id="searchsubmit" class="submit">
 				</form>
 
 				<a href="#" class="advanced-search js-advanced-search"> Advanced search</a>
