@@ -4,6 +4,7 @@ class Search_test extends TestCase
 {
 	public function setUp(): void
 	{
+		parent::setUp();
 		$this->resetInstance();
 	}
 
@@ -39,6 +40,12 @@ class Search_test extends TestCase
 	public function test_advanced_search_at_least_one_result() {
 		$unique_string = uniqid();
 
+		$this->CI->load->model('language_model');
+		$language_id = $this->CI->language_model->insert([
+			'language' => 'Garethian',
+			'sort_order' => 0,
+		]);
+
 		$this->CI->load->model('author_model');
 		$author_id = $this->CI->author_model->insert([
 			'first_name' => 'A',
@@ -49,7 +56,7 @@ class Search_test extends TestCase
 		$project_id = $this->CI->project_model->insert([
 			'title_prefix' => '',
 			'title' => $unique_string,
-			'language_id' => 1,
+			'language_id' => $language_id,
 			'status' => 'complete',
 			'project_type' => 'solo'
 		]);
