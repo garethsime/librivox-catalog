@@ -391,15 +391,8 @@ require CI_PHPUNIT_TESTPATH . '/CIPHPUnitTest.php';
  *  Test database setup
  * -------------------------------------------------------------------
  */
-
-// OK, OK, this is _absolutely_ the wrong place to set this, I know.
-// The problem is that we start trying to connect to the database immediately,
-// and it generally doesn't exist yet, so I'm adding it here knowing that
-// nothing fun happens until after we run CIPHPUnitTest::init
-shell_exec('mariadb -e "CREATE DATABASE IF NOT EXISTS librivox_catalog_test"');
-shell_exec('mariadb -e "CREATE USER IF NOT EXISTS \'catalog-test\' IDENTIFIED BY \'catalog-test\'"');
-shell_exec('mariadb -e "GRANT ALL ON librivox_catalog_test.* TO \'catalog-test\'"');
-shell_exec('mysqldump librivox_catalog --no-data | mariadb librivox_catalog_test');
+// Reset the database on each test run
+shell_exec('cp application/tests/librivox_catalog_test_schema.sqlite3 application/tests/librivox_catalog_test.sqlite3');
 
 // CIPHPUnitTest::init();
 // Or you can set directories for autoloading
@@ -412,5 +405,5 @@ CIPHPUnitTest::init([
 	APPPATH . 'modules',
 	APPPATH . 'hooks',
 	APPPATH . 'helpers',
-	APPPATH.'core',
+	APPPATH . 'core',
 ]);

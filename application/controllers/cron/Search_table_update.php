@@ -12,11 +12,11 @@ class Search_table_update extends CI_Controller
 
 	public function search_table()
 	{
-		$sql = "TRUNCATE TABLE search_table;"; //look into a way to only add new
+		$sql = "DELETE FROM search_table;"; //look into a way to only add new
 		$this->db->query($sql);
 
 		$sql = 'INSERT INTO search_table (search_field, source_table, source_id)
-				SELECT CONCAT(p.title_prefix, " " ,p.title), "projects", p.id
+				SELECT p.title_prefix || " " || p.title, "projects", p.id
 				FROM projects p 
 				WHERE p.id NOT IN (SELECT project_id FROM group_projects WHERE project_id IS NOT NULL);';
 		$this->db->query($sql);
@@ -27,7 +27,7 @@ class Search_table_update extends CI_Controller
 		$this->db->query($sql);
 
 		$sql = 'INSERT INTO search_table (search_field, source_table, source_id)
-				SELECT CONCAT(p.title_prefix, " " ,p.title), "groups", gr.id
+				SELECT p.title_prefix || " " || p.title, "groups", gr.id
 				FROM groups gr
 				JOIN group_projects gp ON (gp.group_id = gr.id)	
 				JOIN projects p ON (p.id = gp.project_id);';

@@ -65,7 +65,7 @@ class Librivox_simple_search{
 			// q is in the title, and not in a group. Joins language & author for fields.
 
 			$sql .= '
-					SELECT "title" AS blade, ' . implode(',' , $cols) . '
+					SELECT \'title\' AS blade, ' . implode(',' , $cols) . '
 
 					FROM search_table st
 
@@ -163,7 +163,7 @@ class Librivox_simple_search{
 
 					UNION
 
-					SELECT "reader" AS blade, ' . implode(',' , $cols) . '
+					SELECT \'reader\' AS blade, ' . implode(',' , $cols) . '
 
 					FROM users pr
 
@@ -215,7 +215,7 @@ class Librivox_simple_search{
 
 					FROM authors a
 
-					WHERE CONCAT(a.first_name, " " , a.last_name) LIKE ' . $like_author .'
+					WHERE a.first_name || " " || a.last_name LIKE ' . $like_author .'
 
 					AND a.linked_to = 0	';
 
@@ -265,9 +265,9 @@ class Librivox_simple_search{
 
 					JOIN authors a ON (ap.author_id = a.id)
 
-					WHERE ( CONCAT(ap.first_name, " " , ap.last_name) LIKE ' . $like_author .'
+					WHERE ( ap.first_name || " " || ap.last_name LIKE ' . $like_author .'
 
-					OR CONCAT(a.first_name, " " , a.last_name) LIKE ' . $like_author .' )
+					OR a.first_name || " " || a.last_name LIKE ' . $like_author .' )
 
 					AND a.linked_to = 0 ';
 
@@ -318,7 +318,7 @@ class Librivox_simple_search{
 
 					JOIN authors a ON (ap.author_id = a.id)
 
-					WHERE CONCAT(ap.first_name, " " , ap.last_name) LIKE ' . $like_author .'
+					WHERE ap.first_name || " " || ap.last_name LIKE ' . $like_author .'
 
 					AND a.linked_to = 0 ';
 
@@ -329,8 +329,20 @@ class Librivox_simple_search{
 			$sql .= ") SELECT *, COUNT(*) OVER() as full_count FROM results";
 
 			$sql .= ($sort_order == 'catalog_date')
-				? ' ORDER BY FIELD(blade, "title", "group", "reader", "author") , 6 DESC '
-				: ' ORDER BY FIELD(blade, "title", "group", "reader", "author") , 4 ASC ';
+				? ' ORDER BY CASE
+WHEN blade = "title" THEN 1
+WHEN blade = "group" THEN 2
+WHEN blade = "reader" THEN 3
+WHEN blade = "author" THEN 4
+ELSE 5
+END, 6 DESC '
+				: ' ORDER BY CASE
+WHEN blade = "title" THEN 1
+WHEN blade = "group" THEN 2
+WHEN blade = "reader" THEN 3
+WHEN blade = "author" THEN 4
+ELSE 5
+END, 4 ASC ';
 
 			$sql .= ' LIMIT ' . $offset . ', ' . $limit;
 
